@@ -9,28 +9,78 @@ interface ExperienceItem {
   dates: string;
   bullets: string[];
   tags: string[];
+  /** Path under `public/`, e.g. `/logos/td.svg` — optional; shows a placeholder slot until set */
+  logoSrc?: string;
   placeholder?: boolean;
+  current?: boolean;
+}
+
+function ExperienceLogo({
+  company,
+  logoSrc,
+}: {
+  company: string;
+  logoSrc?: string;
+}) {
+  return (
+    <div
+      className={`relative flex h-20 w-20 shrink-0 overflow-hidden rounded-2xl border md:h-28 md:w-28 ${
+        logoSrc ? "border-white/15 bg-white/[0.07]" : "border-dashed border-white/20 bg-white/[0.03]"
+      }`}
+    >
+      {logoSrc ? (
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element -- local assets under /public */}
+          <img
+            src={logoSrc}
+            alt={`${company} logo`}
+            className="h-full w-full object-contain p-3 md:p-3.5"
+            loading="lazy"
+          />
+        </>
+      ) : (
+        <span className="m-auto select-none px-1 text-center text-xs font-semibold uppercase leading-tight tracking-wider text-[var(--text-faint)]">
+          Logo
+        </span>
+      )}
+    </div>
+  );
 }
 
 const items: ExperienceItem[] = [
   {
-    company: "TD Bank",
-    role: "Software Engineering Intern",
-    dates: "May 2025 – Present",
-    bullets: [
-      "Backend authentication system serving internal microservices across multiple teams.",
-      "Refactored legacy service layer to event-driven architecture, reducing coupling across 4 services.",
-      "Chose concurrent processes over threads for the monitoring layer to isolate failures per interval.",
-    ],
-    tags: ["Java", "Spring Boot", "PostgreSQL", "Kafka", "React"],
+    company: "TD Bank Group",
+    role: "Business Systems Analyst (Intern)",
+    dates: "May 2026 – Present",
+    logoSrc: "/logos/Toronto-Dominion_Bank_logo.svg",
+    current: true,
+    bullets: ["Fresh start — nothing too much to say yet."],
+    tags: [],
   },
   {
-    company: "Your next role",
-    role: "The timeline grows as you add experience",
-    dates: "—",
-    bullets: [],
-    tags: [],
-    placeholder: true,
+    company: "Uphouse Inc.",
+    role: "Research and Strategy Assistant (Co-op)",
+    dates: "Jan. 2026 – Apr. 2026",
+    logoSrc: "/logos/uphouse.jpg",
+    bullets: [
+      "Built automated workflows in Power Automate and n8n with conditional logic, input normalization, and null-handling—removing daily manual deadline monitoring.",
+      "Integrated Trello with n8n via webhooks for client feedback forms; applied event filtering and payload projection for reliable downstream processing.",
+      "Analyzed AI visibility gaps across industry verticals using Profound; helped lift visibility from near-zero to roughly 50% within one month.",
+      "Validated AI-generated articles against structured source data for factual consistency and legal accuracy before client-facing publication.",
+    ],
+    tags: ["Power Automate", "n8n", "Profound", "Excel"],
+  },
+  {
+    company: "Employment and Social Development Canada (ESDC)",
+    role: "IT Analyst (Co-op)",
+    dates: "June 2025 – Aug. 2025",
+    logoSrc: "/logos/esdc.png",
+    bullets: [
+      "Developed and automated internal workflows with Microsoft Power Platform (Power Automate, MS Forms, Power Apps), cutting manual processing time by about 50%.",
+      "Designed Forms and automated flows for real-time submission routing; built reusable Power Apps components for consistent internal UIs.",
+      "Ran structured testing on OCR-based AI tools with Excel-tracked results; managed Agile work and test suites in Azure DevOps.",
+    ],
+    tags: ["Power Platform", "Power Apps", "Azure DevOps", "SharePoint"],
   },
 ];
 
@@ -47,8 +97,8 @@ export default function Experience() {
         <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
           Where I&apos;ve <span className="text-gradient">worked</span>
         </h2>
-        <p className="mt-4 max-w-2xl text-[var(--text-muted)]">
-          Internship highlights — cards slide in from alternating sides with a bit of perspective as you scroll.
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">
+          Co-op and internship roles drawn from my résumé — cards slide in from alternating sides as you scroll.
         </p>
 
         <div className="relative mt-16 md:mt-20">
@@ -61,9 +111,9 @@ export default function Experience() {
             {items.map((item, index) => {
               const fromLeft = index % 2 === 0;
               return (
-                <li key={item.company} className="relative pl-8 md:pl-11">
+                <li key={`${item.company}-${item.role}-${index}`} className="relative pl-8 md:pl-11">
                   <span
-                    className="absolute left-0 top-8 h-3 w-3 rounded-full border border-white/25 bg-accent-blue shadow-[0_0_18px_rgba(79,142,247,0.85)] md:left-0.5 md:top-9"
+                    className="absolute left-0 top-10 h-3 w-3 rounded-full border border-white/25 bg-accent-blue shadow-[0_0_18px_rgba(79,142,247,0.85)] md:left-0.5 md:top-14"
                     aria-hidden
                   />
 
@@ -81,29 +131,34 @@ export default function Experience() {
                     viewport={{ once: true, amount: 0.22 }}
                     transition={{ duration: 0.8, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
                     style={{ transformStyle: "preserve-3d" }}
-                    className={`glass-panel rounded-2xl p-6 md:p-8 ${item.placeholder ? "border-dashed opacity-45" : ""}`}
+                    className={`glass-panel rounded-2xl p-7 md:p-10 ${item.placeholder ? "border-dashed opacity-45" : ""}`}
                   >
-                    <div className="flex flex-wrap items-start justify-between gap-4">
-                      <div>
-                        <h3 className="font-display text-2xl font-bold text-white md:text-3xl">{item.company}</h3>
-                        <p className="mt-1 text-sm font-medium text-accent-cyan/90">{item.role}</p>
+                    <div className="flex gap-5 md:gap-7">
+                      <ExperienceLogo company={item.company} logoSrc={item.logoSrc} />
+                      <div className="min-w-0 flex-1 space-y-1.5">
+                        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 md:gap-x-6">
+                          <h3 className="font-display min-w-0 break-words text-3xl font-bold leading-snug text-white [overflow-wrap:anywhere] md:text-4xl">
+                            {item.company}
+                          </h3>
+                          <p className="flex shrink-0 items-center justify-self-end gap-2.5 whitespace-nowrap pt-1 text-base text-[var(--text-muted)] md:pt-1.5 md:text-lg">
+                            {!item.placeholder && item.current && (
+                              <span className="relative flex h-2.5 w-2.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
+                                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400" />
+                              </span>
+                            )}
+                            {item.dates}
+                          </p>
+                        </div>
+                        <p className="text-base font-medium text-accent-cyan/90 md:text-lg">{item.role}</p>
                       </div>
-                      <p className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
-                        {!item.placeholder && (
-                          <span className="relative flex h-2 w-2">
-                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
-                            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                          </span>
-                        )}
-                        {item.dates}
-                      </p>
                     </div>
 
                     {!item.placeholder && item.bullets.length > 0 && (
-                      <ul className="mt-6 space-y-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                      <ul className="mt-7 space-y-3.5 text-base leading-relaxed text-[var(--text-muted)] md:mt-8 md:space-y-4 md:text-lg">
                         {item.bullets.map((b) => (
-                          <li key={b} className="flex gap-3">
-                            <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent-blue" />
+                          <li key={b} className="flex gap-3.5">
+                            <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-blue md:mt-3" />
                             <span>{b}</span>
                           </li>
                         ))}
@@ -111,11 +166,11 @@ export default function Experience() {
                     )}
 
                     {item.tags.length > 0 && (
-                      <div className="mt-6 flex flex-wrap gap-2">
+                      <div className="mt-7 flex flex-wrap gap-2.5 md:mt-8">
                         {item.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium text-[var(--text-muted)]"
+                            className="rounded-lg border border-white/10 bg-white/5 px-3.5 py-1.5 text-sm font-medium text-[var(--text-muted)]"
                           >
                             {tag}
                           </span>
