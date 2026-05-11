@@ -97,7 +97,7 @@ export default function Experience() {
         <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
           Where I&apos;ve <span className="text-gradient">worked</span>
         </h2>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg">
+        <p className="section-lead">
           Co-op and internship roles drawn from my résumé — cards slide in from alternating sides as you scroll.
         </p>
 

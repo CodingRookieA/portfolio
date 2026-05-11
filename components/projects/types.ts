@@ -13,4 +13,6 @@ export interface Project {
   extraLinks?: ProjectExtraLink[];
   linkLabel?: string;
   sourceNote?: string;
+  /** Local markdown for the detail panel; null/undefined if no file matched. */
+  readmeMarkdown?: string | null;
 }

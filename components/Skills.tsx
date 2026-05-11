@@ -49,7 +49,7 @@ export default function Skills() {
         <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
           Capabilities <span className="text-gradient">by layer</span>
         </h2>
-        <p className="mt-4 max-w-2xl text-[var(--text-muted)]">
+        <p className="section-lead">
           Languages, frameworks, and tools — tiles stagger in with depth; a gentle float keeps the grid alive (unless
           reduced motion is on).
         </p>

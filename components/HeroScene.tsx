@@ -48,7 +48,7 @@ function ParticleField() {
 
 export default function HeroScene() {
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 h-full min-h-[100vh] w-full">
+    <div className="pointer-events-none absolute inset-0 z-0 h-full min-h-[100vh] w-full" aria-hidden="true">
       <Canvas
         gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }}
         dpr={[1, 1.5]}

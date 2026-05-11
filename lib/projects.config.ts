@@ -26,7 +26,7 @@ export interface ProjectOverride {
 export interface FlagshipProjectConfig {
   name: string;
   story: string;
-  /** Shown on the small name card; keep to ~2 short sentences. */
+  /** One-line (or two very short) tagline on the card; full `story` is for a future expanded view. */
   excerpt: string;
   highlights: string[];
   category: ProjectCategory;
@@ -42,12 +42,23 @@ export interface FlagshipProjectConfig {
   extraLinks?: ProjectExtraLink[];
 }
 
+/**
+ * Order of pinned GitHub repos on the page (after the manual flagship card).
+ * Names must match GitHub repository `name` exactly.
+ */
+export const pinnedProjectDisplayOrder: readonly string[] = [
+  "MindBit",
+  "Planetze",
+  "Assembly-game",
+  "LinuxSystemTool",
+  "Jenkins",
+];
+
 export const flagshipProject: FlagshipProjectConfig = {
   name: "FinWise",
-  excerpt:
-    "AI-grounded mutual fund & ETF advisor for Canadian investors: questionnaire, multi-bank CSV import, and RAG chat over articles plus live fund data.",
+  excerpt: "Canadian funds & ETFs, answered with receipts—RAG + live data, not generic chatbot filler.",
   story:
-    "FinWise helps Canadian investors evaluate mutual funds and ETFs through a risk-aware questionnaire, optional multi-bank holdings CSV import, and an assistant grounded in curated articles plus live fund data—not blind chatbot guesses. The stack is React and Node with a two-stage Gemini workflow over MongoDB Atlas vector search and streamed SSE responses. Google OAuth handles sessions; Docker and GitHub Actions deploy to Render.",
+    "FinWise helps Canadian investors compare mutual funds and ETFs with a risk questionnaire, optional multi-bank CSV import, and a RAG assistant over curated articles and live fund data. React and Node, two-stage Gemini over MongoDB Atlas vector search with streamed SSE, Google OAuth, deployed via Docker and GitHub Actions on Render.",
   highlights: [
     "React",
     "Vite",
@@ -68,34 +79,67 @@ export const flagshipProject: FlagshipProjectConfig = {
   url: "https://finwise-frontend-7qbw.onrender.com/",
   linkLabel: "Live demo ↗",
   sourceNote: "Source is private (privacy / academic constraints); readme highlights & demo linked above.",
-  // Add files under public/, e.g. "/finwise/landing.png", "/finwise/chat.png"
-  screenshots: [],
+  /** First image is the featured-card preview; the rest appear in the expanded detail gallery. */
+  screenshots: [
+    "/screenshot/finwise/header.png",
+    "/screenshot/finwise/1.png",
+    "/screenshot/finwise/2.png",
+    "/screenshot/finwise/3.png",
+    "/screenshot/finwise/4.png",
+    "/screenshot/finwise/5.png",
+  ],
   videos: [],
   extraLinks: [],
 };
 
 export const projectOverrides: Record<string, ProjectOverride> = {
   LinuxSystemTool: {
+    excerpt: "Your laptop’s vitals, live in the terminal—C, POSIX, and processes that don’t flinch.",
     story:
-      "Built a real-time Linux resource monitor in C with concurrent processes, custom CLI parsing, and live terminal output. Chose processes over threads to isolate sample failures per interval.",
+      "Real-time Linux resource monitor in C with concurrent processes, custom CLI parsing, and live terminal output. Processes (not threads) isolate sampling failures per interval.",
     highlights: ["C", "Linux", "Concurrency", "POSIX", "Makefile"],
     category: "systems",
   },
   "Assembly-game": {
+    excerpt: "Three pixel levels, zero frameworks—just MIPS, bitmaps, and jump timing in MARS.",
     story:
-      "Full platform game in x86 Assembly on the MARS simulator. Every sprite, collision check, and game loop written at the register level.",
-    highlights: ["x86 Assembly", "MARS", "Game Dev"],
+      "Side-scrolling platformer in MIPS Assembly on the MARS simulator—sprites, collisions, and the main loop at register level.",
+    highlights: ["MIPS Assembly", "MARS", "Game Dev"],
     category: "systems",
+    screenshots: [
+      "/screenshot/assembly/header.png",
+      "/screenshot/assembly/Screenshot%202026-05-11%20160427.png",
+      "/screenshot/assembly/Screenshot%202026-05-11%20160439.png",
+      "/screenshot/assembly/Screenshot%202026-05-11%20160449.png",
+    ],
   },
   Planetze: {
+    excerpt: "Survey your habits, see your footprint—Android + Firebase eco tracking that sticks.",
     story:
-      "Android eco-tracker calculating personal carbon footprint from daily habits. MVVM architecture, Firebase backend, and MPAndroidChart visualizations.",
+      "Android eco-tracker that estimates carbon footprint from daily habits. MVVM, Firebase, and MPAndroidChart for trends.",
     highlights: ["Kotlin", "Android", "Firebase", "MVVM"],
     category: "mobile",
+    screenshots: ["/screenshot/planetze/header.jpg", "/screenshot/planetze/1.jpg", "/screenshot/planetze/2.jpg"],
   },
   MindBit: {
-    story: "ADD YOUR STORY HERE",
+    excerpt: "MBTI meets multiplayer—AI game picks, chat, and video calls in one polished stack.",
+    story: "React + TypeScript sandbox—swap in your pitch and outcomes when the build is ready.",
     highlights: ["TypeScript", "React"],
     category: "web",
+    screenshots: [
+      "/screenshot/mindbit/header.jpg",
+      "/screenshot/mindbit/1767886111081.jpg",
+      "/screenshot/mindbit/1767886134358.jpg",
+      "/screenshot/mindbit/1767886153854.jpg",
+      "/screenshot/mindbit/1767886166628.jpg",
+    ],
+  },
+  Jenkins: {
+    excerpt:
+      "Jenkins meets GitHub—webhook-driven pipelines that lint, test, and keep broken code off main.",
+    story:
+      "Production-style CI with Jenkins declarative and multibranch pipelines, GitHub webhooks, and Python. pytest and flake8 on every push; branch protection and failure handling are the focus, with a minimal app on purpose.",
+    highlights: ["Jenkins", "Python", "GitHub", "pytest", "flake8", "Docker"],
+    category: "systems",
   },
 };

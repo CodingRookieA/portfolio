@@ -3,10 +3,11 @@
 import SectionShell from "@/components/SectionShell";
 import { FeaturedProjectCard } from "@/components/projects/FeaturedProjectCard";
 import { GridProjectCard } from "@/components/projects/GridProjectCard";
+import { ProjectDetailPanel, type OriginRect } from "@/components/projects/ProjectDetailPanel";
 import ProjectTilt from "@/components/projects/ProjectTilt";
 import type { Project } from "@/components/projects/types";
 import { motion, useReducedMotion } from "framer-motion";
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import type { ProjectCategory } from "@/lib/projects.config";
 
 export type { Project };
@@ -35,8 +36,29 @@ const gridItem = {
 
 export default function Projects({ projects }: { projects: Project[] }) {
   const [filter, setFilter] = useState<Filter>("all");
+  const [detailProject, setDetailProject] = useState<Project | null>(null);
+  const [origin, setOrigin] = useState<OriginRect | null>(null);
   const prefersReducedMotion = useReducedMotion();
-  const gridRef = useRef<HTMLDivElement>(null);
+  const filterRadioRefs = useRef<Map<Filter, HTMLButtonElement>>(new Map());
+
+  const handleOpenDetail = useCallback((project: Project, originEl: HTMLElement) => {
+    const rect = originEl.getBoundingClientRect();
+    const cs = window.getComputedStyle(originEl);
+    const radius = parseFloat(cs.borderTopLeftRadius) || 16;
+    setOrigin({
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+      borderRadius: radius,
+    });
+    setDetailProject(project);
+  }, []);
+
+  const handleClosed = useCallback(() => {
+    setDetailProject(null);
+    setOrigin(null);
+  }, []);
 
   const counts = useMemo(() => {
     return {
@@ -51,49 +73,6 @@ export default function Projects({ projects }: { projects: Project[] }) {
     () => projects.filter((p) => filter === "all" || p.category === filter),
     [filter, projects]
   );
-
-  useLayoutEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-
-    function syncGridCardHeights() {
-      const g = gridRef.current;
-      if (!g) return;
-      const nodes = [...g.querySelectorAll<HTMLElement>("[data-grid-sync-height]")];
-      if (nodes.length <= 1) {
-        nodes.forEach((el) => el.style.removeProperty("min-height"));
-        return;
-      }
-      nodes.forEach((el) => el.style.removeProperty("min-height"));
-      void g.offsetHeight;
-      let max = 0;
-      nodes.forEach((el) => {
-        max = Math.max(max, Math.ceil(el.getBoundingClientRect().height));
-      });
-      nodes.forEach((el) => {
-        el.style.minHeight = `${max}px`;
-      });
-    }
-
-    syncGridCardHeights();
-
-    const ro = new ResizeObserver(() => syncGridCardHeights());
-    ro.observe(grid);
-
-    window.addEventListener("resize", syncGridCardHeights);
-
-    const staggerMs = prefersReducedMotion ? 0 : Math.min(900, 120 + visibleProjects.length * 100);
-    const t = window.setTimeout(syncGridCardHeights, staggerMs);
-
-    return () => {
-      window.clearTimeout(t);
-      ro.disconnect();
-      window.removeEventListener("resize", syncGridCardHeights);
-      [...(gridRef.current?.querySelectorAll<HTMLElement>("[data-grid-sync-height]") ?? [])].forEach((el) =>
-        el.style.removeProperty("min-height")
-      );
-    };
-  }, [visibleProjects, prefersReducedMotion]);
 
   const tabs: Array<{ key: Filter; label: string }> = [
     { key: "all", label: "All" },
@@ -122,15 +101,39 @@ export default function Projects({ projects }: { projects: Project[] }) {
             See all on GitHub ↗
           </a>
         </div>
-        <p className="mt-4 max-w-2xl text-[var(--text-muted)]">
-          Flagship plus pinned repos — perspective tilt on hover. Filter by category; layout animates with staggered depth.
+        <p className="section-lead">
+          Flagship plus pinned repos — click a card for the README write-up; the card smoothly expands to a centered
+          full view and shrinks back when closed.
         </p>
 
-        <div className="mt-10 inline-flex flex-wrap gap-1 rounded-2xl border border-white/10 bg-white/5 p-1 backdrop-blur-md">
+        <div
+          role="radiogroup"
+          aria-label="Filter projects by category"
+          className="mt-10 inline-flex flex-wrap gap-1 rounded-2xl border border-white/10 bg-white/5 p-1 backdrop-blur-md"
+          onKeyDown={(e) => {
+            if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+            const keys = tabs.map((t) => t.key);
+            const i = keys.indexOf(filter);
+            if (i < 0) return;
+            const next =
+              e.key === "ArrowRight" ? (i + 1) % keys.length : (i - 1 + keys.length) % keys.length;
+            const nextKey = keys[next]!;
+            setFilter(nextKey);
+            e.preventDefault();
+            queueMicrotask(() => filterRadioRefs.current.get(nextKey)?.focus());
+          }}
+        >
           {tabs.map((tab) => (
             <button
               key={tab.key}
               type="button"
+              role="radio"
+              aria-checked={filter === tab.key}
+              tabIndex={filter === tab.key ? 0 : -1}
+              ref={(el) => {
+                if (el) filterRadioRefs.current.set(tab.key, el);
+                else filterRadioRefs.current.delete(tab.key);
+              }}
               onClick={() => setFilter(tab.key)}
               className={`rounded-xl px-4 py-2 text-xs font-semibold uppercase tracking-wider transition md:text-[13px] ${
                 filter === tab.key
@@ -158,9 +161,8 @@ export default function Projects({ projects }: { projects: Project[] }) {
           </div>
         ) : (
           <motion.div
-            ref={gridRef}
             key={filter}
-            className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2"
+            className="mt-12 grid grid-cols-1 items-start gap-6 md:grid-cols-2"
             variants={prefersReducedMotion ? { hidden: {}, show: {} } : gridContainer}
             initial={prefersReducedMotion ? false : "hidden"}
             whileInView={prefersReducedMotion ? undefined : "show"}
@@ -168,13 +170,22 @@ export default function Projects({ projects }: { projects: Project[] }) {
             style={{ perspective: prefersReducedMotion ? undefined : "1200px" }}
           >
             {visibleProjects.map((project) => {
-              const indexInOriginal = projects.findIndex((p) => p.name === project.name);
-              const isFeatured = indexInOriginal === 0 && filter === "all";
+              // Object identity: only the manual flagship row (first in `projects`) gets the wide card.
+              const isFeatured = filter === "all" && project === projects[0];
+              const isThisExpanded = detailProject?.name === project.name;
 
               const inner = isFeatured ? (
-                <FeaturedProjectCard project={project} />
+                <FeaturedProjectCard
+                  project={project}
+                  onOpenDetail={handleOpenDetail}
+                  isHidden={isThisExpanded}
+                />
               ) : (
-                <GridProjectCard project={project} />
+                <GridProjectCard
+                  project={project}
+                  onOpenDetail={handleOpenDetail}
+                  isHidden={isThisExpanded}
+                />
               );
 
               return (
@@ -183,15 +194,15 @@ export default function Projects({ projects }: { projects: Project[] }) {
                   variants={prefersReducedMotion ? { hidden: {}, show: {} } : gridItem}
                   className={`min-h-0 ${isFeatured ? "md:col-span-2" : ""}`}
                   layout={!prefersReducedMotion}
-                  data-grid-sync-height={isFeatured ? undefined : ""}
                 >
-                  {prefersReducedMotion ? inner : <ProjectTilt>{inner}</ProjectTilt>}
+                  {prefersReducedMotion || isThisExpanded ? inner : <ProjectTilt>{inner}</ProjectTilt>}
                 </motion.div>
               );
             })}
           </motion.div>
         )}
       </div>
+      <ProjectDetailPanel project={detailProject} origin={origin} onClosed={handleClosed} />
     </SectionShell>
   );
 }

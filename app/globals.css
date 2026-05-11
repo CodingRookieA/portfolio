@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+  }
+
+  a.skip-link:focus-visible {
+    outline: none;
+  }
+}
+
 :root {
   --font-inter: "Inter", "Helvetica Neue", sans-serif;
   --font-space: "Space Grotesk", "Inter", sans-serif;
@@ -47,6 +58,13 @@ body {
 
 .font-display {
   font-family: var(--font-space), var(--font-inter), system-ui, sans-serif;
+}
+
+@layer components {
+  /** Shared intro line under section H2s (Experience, Projects, Skills). */
+  .section-lead {
+    @apply mt-4 max-w-2xl text-base leading-relaxed text-[var(--text-muted)] md:text-lg;
+  }
 }
 
 @layer utilities {

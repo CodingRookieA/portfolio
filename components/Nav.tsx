@@ -41,10 +41,14 @@ export default function Nav() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-[100] flex justify-center px-3 pt-4 md:px-6">
-      <nav className="pointer-events-auto flex h-14 w-full max-w-5xl items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[rgba(10,10,26,0.52)] px-3 shadow-[0_8px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:h-[58px] md:gap-6 md:px-5">
+      <nav
+        aria-label="Primary"
+        className="pointer-events-auto flex h-14 w-full max-w-5xl items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[rgba(10,10,26,0.52)] px-3 shadow-[0_8px_40px_rgba(0,0,0,0.45)] backdrop-blur-2xl md:h-[58px] md:gap-6 md:px-5"
+      >
         <button
           type="button"
           onClick={() => go("bio")}
+          aria-label="Home"
           className="shrink-0 font-display text-lg font-bold tracking-tight text-white"
         >
           AZ<span className="text-accent-cyan">.</span>
@@ -59,6 +63,7 @@ export default function Nav() {
                   key={s.id}
                   type="button"
                   onClick={() => go(s.id)}
+                  aria-current={isActive ? "true" : undefined}
                   className="relative shrink-0 rounded-xl px-3 py-2 text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] transition hover:text-white md:text-[13px]"
                 >
                   {isActive && (

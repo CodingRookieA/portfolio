@@ -19,10 +19,20 @@ export function ProjectCardDeck({ project, variant }: { project: Project; varian
           </span>
         </div>
       </div>
-      <h3 className="font-display min-w-0 max-w-full break-words text-2xl font-bold leading-snug text-white [overflow-wrap:anywhere] md:text-3xl">
+      <h3
+        className={`font-display min-w-0 max-w-full break-words font-bold leading-snug text-white [overflow-wrap:anywhere] ${
+          isFeatured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
+        }`}
+      >
         {project.name}
       </h3>
-      <p className="text-sm leading-relaxed text-[var(--text-muted)]">{project.story}</p>
+      <p
+        className={`font-medium leading-snug text-white/85 [overflow-wrap:anywhere] ${
+          isFeatured ? "line-clamp-2 text-base md:text-lg" : "line-clamp-3 text-sm md:text-base"
+        }`}
+      >
+        {project.excerpt ?? project.story}
+      </p>
       <div className="flex flex-wrap gap-2">
         {project.highlights.map((h) => (
           <span
