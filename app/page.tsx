@@ -2,6 +2,7 @@ import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Nav from "@/components/Nav";
+import ScrollHint from "@/components/ScrollHint";
 import Projects, { type Project } from "@/components/Projects";
 import Skills from "@/components/Skills";
 import { getPinnedRepos } from "@/lib/github";
@@ -117,6 +118,7 @@ export default async function Page() {
   return (
     <>
       <Nav />
+      <ScrollHint />
       <main
         id="main-content"
         tabIndex={-1}

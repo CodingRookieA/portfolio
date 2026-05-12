@@ -102,8 +102,9 @@ export default function Experience() {
         </p>
 
         <div className="relative mt-16 md:mt-20">
+          {/* Rail: line + dots share the same x so the stroke passes through dot centers (h-3 w-3 → 6px). */}
           <div
-            className="absolute left-[11px] top-2 h-[calc(100%-12px)] w-px bg-gradient-to-b from-accent-blue via-accent-cyan/45 to-transparent md:left-[13px]"
+            className="absolute left-[6px] top-2 h-[calc(100%-12px)] w-px -translate-x-1/2 bg-gradient-to-b from-accent-blue via-accent-cyan/45 to-transparent"
             aria-hidden
           />
 
@@ -113,7 +114,7 @@ export default function Experience() {
               return (
                 <li key={`${item.company}-${item.role}-${index}`} className="relative pl-8 md:pl-11">
                   <span
-                    className="absolute left-0 top-10 h-3 w-3 rounded-full border border-white/25 bg-accent-blue shadow-[0_0_18px_rgba(79,142,247,0.85)] md:left-0.5 md:top-14"
+                    className="absolute left-[6px] top-10 h-3 w-3 -translate-x-1/2 rounded-full border border-white/25 bg-accent-blue shadow-[0_0_18px_rgba(79,142,247,0.85)] md:top-14"
                     aria-hidden
                   />
 

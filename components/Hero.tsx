@@ -7,9 +7,9 @@ import { useEffect, useRef, useState } from "react";
 const HeroScene = dynamic(() => import("@/components/HeroScene"), { ssr: false });
 
 const SUBTITLE_LINES = [
-  "Computer Science @ UTSC",
-  "Systems · Backend · Low-level curiosity",
-  "Open to internships — let's build something sharp.",
+  "Computer Science @ UTSC · TD Bank Intern",
+  "Backend · AI/ML · Systems when it counts",
+  "Recruiting for Fall 2026/Summer 2027",
 ];
 
 export default function Hero() {
@@ -54,7 +54,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="bio"
-      className="relative flex min-h-screen flex-col justify-center overflow-hidden scroll-mt-28 px-4 pb-28 pt-32 md:px-8 md:pb-32 md:pt-36"
+      className="relative flex min-h-[100dvh] flex-col justify-center overflow-hidden scroll-mt-28 px-4 pb-16 pt-24 [@media(max-height:780px)]:justify-start [@media(max-height:780px)]:pb-10 [@media(max-height:780px)]:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] md:px-8 md:pb-24 md:pt-28 lg:pb-28 lg:pt-32"
     >
       <div className="absolute inset-0 z-0 bg-deep bg-radial-glow" />
       <HeroScene />
@@ -80,7 +80,7 @@ export default function Hero() {
           initial={reduced ? false : { opacity: 0, y: 16 }}
           animate={reduced ? {} : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.05 }}
-          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-[var(--text-muted)] backdrop-blur-md"
+          className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-muted)] backdrop-blur-md md:mb-6"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-accent-cyan shadow-[0_0_12px_rgba(0,212,255,0.9)]" />
           Portfolio 2026
@@ -90,7 +90,7 @@ export default function Hero() {
           initial={reduced ? false : { opacity: 0, y: 28, rotateX: 12 }}
           animate={reduced ? {} : { opacity: 1, y: 0, rotateX: 0 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display text-5xl font-bold leading-[0.95] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
+          className="font-display text-5xl font-bold leading-[0.92] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl xl:text-[5.25rem]"
           style={{ transformStyle: "preserve-3d" }}
         >
           Alexander
@@ -101,11 +101,11 @@ export default function Hero() {
           initial={reduced ? false : { opacity: 0 }}
           animate={reduced ? {} : { opacity: 1 }}
           transition={{ delay: 0.35, duration: 0.5 }}
-          className="mt-8 min-h-[4.5rem] max-w-xl font-medium text-accent-cyan/95 sm:text-lg md:text-xl"
+          className="mt-5 min-h-[3.25rem] max-w-xl font-medium text-accent-cyan/95 text-lg leading-snug sm:min-h-[3.5rem] sm:text-xl [@media(max-height:780px)]:mt-3 md:mt-7 md:min-h-[4.25rem] md:text-2xl"
         >
           {visibleSubtitle}
           {!reduced && charIndex < currentLine.length && (
-            <span className="ml-0.5 inline-block h-6 w-0.5 animate-pulse bg-accent-cyan align-middle" />
+            <span className="ml-0.5 inline-block h-5 w-0.5 animate-pulse bg-accent-cyan align-middle sm:h-6" />
           )}
         </motion.p>
 
@@ -113,61 +113,90 @@ export default function Hero() {
           initial={reduced ? false : { opacity: 0, scale: 0.92 }}
           animate={reduced ? {} : { opacity: 1, scale: 1 }}
           transition={{ delay: 0.45, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mt-12 flex flex-col items-center gap-10 md:flex-row md:items-start"
+          className="relative mt-6 flex flex-col items-center gap-6 [@media(max-height:780px)]:mt-4 [@media(max-height:780px)]:gap-5 md:mt-10 md:gap-10 md:flex-row md:items-start lg:mt-12"
         >
-          <div className="relative">
+          <div className="relative shrink-0">
             <div className="absolute -inset-1 rounded-full bg-gradient-to-br from-accent-blue/50 to-accent-cyan/40 opacity-60 blur-md" />
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border border-white/15 bg-white/5 text-2xl font-semibold text-white backdrop-blur-xl glow-ring md:h-40 md:w-40">
+            <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-white/15 bg-white/5 text-xl font-semibold text-white backdrop-blur-xl glow-ring sm:h-32 sm:w-32 sm:text-2xl md:h-40 md:w-40">
               {/* Replace with next/image headshot */}
               AZ
             </div>
           </div>
 
-          <div className="max-w-xl space-y-5 text-left text-base leading-relaxed text-[var(--text-muted)] md:pt-2">
+          <div className="max-w-xl space-y-4 text-left text-lg leading-relaxed text-[var(--text-muted)] md:space-y-5 md:pt-2 md:text-xl">
             <p>
-              Third-year CS student gravitating toward systems work — close enough to the metal to feel it. I ship
-              thoughtful backend and low-level tools, not just UI polish.
+              I&apos;d rather build the future than write thinkpieces about it. Backend services and AI features that
+              hold up in production — RAG pipelines, multi-signal classifiers, the architecture underneath them.
             </p>
             <p>
-              Currently interning at TD Bank on backend engineering. From C and Assembly to Kotlin and TypeScript, I
-              like problems with real constraints.
+              Currently interning at TD Bank. Comfortable from TypeScript/Node up top down to
+              multi-threaded C tools and shell automation on Linux. I like problems with real constraints.
             </p>
-            <div className="flex flex-wrap justify-center gap-3 pt-2 md:justify-start">
+            <div
+              className="mt-1 rounded-xl border border-white/10 bg-white/[0.04] p-3.5 md:p-5"
+              aria-label="Education"
+            >
+              <div className="flex gap-3 md:gap-4">
+                <span
+                  className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.06] text-accent-cyan sm:h-9 sm:w-9 sm:rounded-xl md:h-10 md:w-10"
+                  aria-hidden
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.75"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4 sm:h-[18px] sm:w-[18px] md:h-5 md:w-5"
+                  >
+                    <path d="M22 10v6" />
+                    <path d="M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                  </svg>
+                </span>
+                <div className="min-w-0 flex-1 space-y-2 text-base leading-relaxed text-[var(--text-muted)] md:space-y-3 md:text-lg">
+                  <div>
+                    <p className="font-display text-lg font-semibold text-white md:text-xl">
+                      University of Toronto Scarborough
+                    </p>
+                    <p className="mt-1.5 text-[var(--text-muted)] md:mt-2">
+                      CS Specialist Co-op
+                      <span className="mx-2 text-white/20">·</span>
+                      <span className="font-semibold text-accent-cyan/95">3.89 CGPA</span>
+                    </p>
+                  </div>
+                  <p className="text-[0.9375rem] leading-relaxed text-white/70 md:text-base">
+                    Dean&apos;s List &amp; Renewable Entrance Scholarship (2023–2026)
+                  </p>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/10 pt-2.5 text-sm text-[var(--text-muted)] md:gap-x-4 md:pt-3 md:text-base">
+                    <span className="font-medium text-white/80">2023–present</span>
+                    <span className="hidden h-3 w-px bg-white/15 sm:block" aria-hidden />
+                    <span>Projected graduation: Fall 2027</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-center gap-3 pt-1 md:justify-start md:pt-2">
               <motion.a
                 href="#projects"
                 whileHover={reduced ? {} : { scale: 1.02 }}
                 whileTap={reduced ? {} : { scale: 0.98 }}
-                className="rounded-xl bg-accent-blue px-6 py-3 text-sm font-semibold text-white shadow-[0_0_32px_rgba(79,142,247,0.35)] transition hover:bg-[#6ba3ff]"
+                className="rounded-xl bg-accent-blue px-6 py-3 text-base font-semibold text-white shadow-[0_0_32px_rgba(79,142,247,0.35)] transition hover:bg-[#6ba3ff]"
               >
                 View projects
               </motion.a>
               <motion.a
-                href="mailto:alexander@example.com"
+                href="mailto:alexanderz.zhang@mail.utoronto.ca"
                 whileHover={reduced ? {} : { scale: 1.02 }}
                 whileTap={reduced ? {} : { scale: 0.98 }}
-                className="glass-panel rounded-xl px-6 py-3 text-sm font-semibold text-white/90"
+                className="glass-panel rounded-xl px-6 py-3 text-base font-semibold text-white/90"
               >
                 Email me
               </motion.a>
             </div>
           </div>
         </motion.div>
-      </motion.div>
-
-      <motion.div
-        aria-hidden
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.5 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-        className="pointer-events-none absolute bottom-8 left-1/2 z-10 hidden -translate-x-1/2 md:block"
-      >
-        <div className="flex h-10 w-6 justify-center rounded-full border border-white/15 pt-2">
-          <motion.span
-            animate={reduced ? {} : { y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
-            className="block h-2 w-1 rounded-full bg-accent-cyan"
-          />
-        </div>
       </motion.div>
     </section>
   );
