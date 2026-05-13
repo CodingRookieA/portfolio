@@ -80,8 +80,7 @@ export default function Skills() {
           Capabilities <span className="text-gradient">by layer</span>
         </h2>
         <p className="section-lead">
-          Capabilities across the stack — tiles stagger in with depth; a gentle float keeps the grid alive (unless
-          reduced motion is on).
+          Capabilities across the stack.
         </p>
 
         <motion.div
