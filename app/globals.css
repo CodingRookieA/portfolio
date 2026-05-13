@@ -47,6 +47,11 @@
 
 html {
   scroll-behavior: smooth;
+  /* Global rem scale: shrinks every Tailwind text/padding/gap/max-width via
+     a single knob. 16px = browser default; 15px ≈ 6% smaller; 14px ≈ 12.5%;
+     13px ≈ 18.75% (current). Body copy at this base reads ~13px which is at
+     the low end — bump back up if anything feels hard to read. */
+  font-size: 13px;
 }
 
 body {

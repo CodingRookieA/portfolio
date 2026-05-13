@@ -21,8 +21,9 @@ export default function Hero() {
   });
   const yGlow = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const yGlow2 = useTransform(scrollYProgress, [0, 1], [0, 55]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 0.6], [0, 48]);
+  /* Fade / move later and gentler so the handoff to Experience feels less abrupt. */
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.58], [1, 0]);
+  const contentY = useTransform(scrollYProgress, [0, 0.72], [0, 20]);
 
   const [lineIndex, setLineIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -54,23 +55,31 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="bio"
-      className="relative flex min-h-[100dvh] flex-col justify-center overflow-hidden scroll-mt-28 px-4 pb-16 pt-24 [@media(max-height:780px)]:justify-start [@media(max-height:780px)]:pb-10 [@media(max-height:780px)]:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] md:px-8 md:pb-24 md:pt-28 lg:pb-28 lg:pt-32"
+      className="relative flex min-h-[100dvh] flex-col justify-center overflow-x-hidden scroll-mt-28 px-4 pb-24 pt-24 [@media(max-height:780px)]:justify-start [@media(max-height:780px)]:pb-14 [@media(max-height:780px)]:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] md:px-8 md:pb-32 md:pt-28 lg:pb-36 lg:pt-32"
     >
-      <div className="absolute inset-0 z-0 bg-deep bg-radial-glow" />
-      <HeroScene />
+      {/* Clip particles / glow orbs only — keeps tall hero content (CTAs) from being chopped at the fold. */}
+      <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        <div className="absolute inset-0 bg-deep bg-radial-glow" />
+        <HeroScene />
+        {!reduced && (
+          <>
+            <motion.div
+              style={{ y: yGlow }}
+              className="absolute -left-40 top-1/4 z-[1] h-80 w-80 rounded-full bg-accent-blue/25 blur-[120px]"
+            />
+            <motion.div
+              style={{ y: yGlow2 }}
+              className="absolute -right-32 bottom-1/4 z-[1] h-72 w-72 rounded-full bg-accent-cyan/20 blur-[100px]"
+            />
+          </>
+        )}
+      </div>
 
-      {!reduced && (
-        <>
-          <motion.div
-            style={{ y: yGlow }}
-            className="absolute -left-40 top-1/4 z-[1] h-80 w-80 rounded-full bg-accent-blue/25 blur-[120px]"
-          />
-          <motion.div
-            style={{ y: yGlow2 }}
-            className="absolute -right-32 bottom-1/4 z-[1] h-72 w-72 rounded-full bg-accent-cyan/20 blur-[100px]"
-          />
-        </>
-      )}
+      {/* Ramp from hero atmosphere into the flat page background — removes the hard horizontal seam. */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-28 bg-gradient-to-b from-transparent via-[#0a0a1a]/50 to-[#0a0a1a] md:h-36 md:via-[#0a0a1a]/60 lg:h-44 lg:via-[#0a0a1a]/70"
+        aria-hidden
+      />
 
       <motion.div
         style={reduced ? undefined : { opacity: contentOpacity, y: contentY }}
@@ -177,7 +186,7 @@ export default function Hero() {
                 </div>
               </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-3 pt-1 md:justify-start md:pt-2">
+            <div className="flex flex-wrap justify-center gap-3 pb-6 pt-1 md:justify-start md:pb-8 md:pt-2">
               <motion.a
                 href="#projects"
                 whileHover={reduced ? {} : { scale: 1.02 }}
