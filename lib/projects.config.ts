@@ -1,4 +1,4 @@
-export type ProjectCategory = "systems" | "mobile" | "web";
+export type ProjectCategory = "systems" | "mobile" | "web" | "db";
 
 export interface ProjectVideo {
   url: string;
@@ -20,6 +20,12 @@ export interface ProjectOverride {
   screenshots?: string[];
   videos?: ProjectVideo[];
   extraLinks?: ProjectExtraLink[];
+  /**
+   * Override the language dot/label shown on the card. Useful when GitHub's
+   * detected primary language doesn't reflect what the project is really about
+   * (e.g. a SQL-focused repo whose file count skews toward JS plumbing).
+   */
+  language?: { name: string; color: string } | null;
 }
 
 /** Manual flagship entry — prepend before GitHub pins on the portfolio page. */
@@ -43,16 +49,28 @@ export interface FlagshipProjectConfig {
 }
 
 /**
- * Order of pinned GitHub repos on the page (after the manual flagship card).
- * Names must match GitHub repository `name` exactly.
+ * The pinned project lineup, in display order, shown after the manual flagship card.
+ *
+ * This is the SINGLE SOURCE OF TRUTH for which non-flagship projects appear
+ * on the page. Names here must each have a matching entry in `projectOverrides`
+ * below — entries without an override are skipped. The names also double as
+ * filenames under `.readme-fetch/<name>.md` for the expanded-view README.
+ *
+ * (We deliberately don't fetch from the GitHub pinned-items API at runtime: it
+ * adds an env-var dependency, is offline-fragile, and provides no field that
+ * isn't already overridden here. See `lib/github.ts` — kept around but unused.)
  */
 export const pinnedProjectDisplayOrder: readonly string[] = [
   "MindBit",
   "Planetze",
   "Assembly-game",
+  "PostFolio",
   "LinuxSystemTool",
   "Jenkins",
 ];
+
+/** GitHub username; used to construct each pinned project's repo URL. */
+export const GITHUB_USERNAME = "CodingRookieA";
 
 export const flagshipProject: FlagshipProjectConfig = {
   name: "FinWise",
@@ -75,7 +93,7 @@ export const flagshipProject: FlagshipProjectConfig = {
     "GitHub Actions",
   ],
   category: "web",
-  language: { name: "TypeScript", color: "#3178c6" },
+  language: { name: "JavaScript", color: "#f1e05a" },
   url: "https://finwise-frontend-7qbw.onrender.com/",
   linkLabel: "Live demo ↗",
   sourceNote: "Source is private (privacy / academic constraints); readme highlights & demo linked above.",
@@ -99,6 +117,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Real-time Linux resource monitor in C with concurrent processes, custom CLI parsing, and live terminal output. Processes (not threads) isolate sampling failures per interval.",
     highlights: ["C", "Linux", "Concurrency", "POSIX", "Makefile"],
     category: "systems",
+    language: { name: "C", color: "#555555" },
   },
   "Assembly-game": {
     excerpt: "Three pixel levels, zero frameworks—just MIPS, bitmaps, and jump timing in MARS.",
@@ -106,6 +125,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Side-scrolling platformer in MIPS Assembly on the MARS simulator—sprites, collisions, and the main loop at register level.",
     highlights: ["MIPS Assembly", "MARS", "Game Dev"],
     category: "systems",
+    language: { name: "Assembly", color: "#6E4C13" },
     screenshots: [
       "/screenshot/assembly/header.png",
       "/screenshot/assembly/Screenshot%202026-05-11%20160427.png",
@@ -119,6 +139,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Android eco-tracker that estimates carbon footprint from daily habits. MVVM, Firebase, and MPAndroidChart for trends.",
     highlights: ["Kotlin", "Android", "Firebase", "MVVM"],
     category: "mobile",
+    language: { name: "Java", color: "#b07219" },
     screenshots: ["/screenshot/planetze/header.jpg", "/screenshot/planetze/1.jpg", "/screenshot/planetze/2.jpg"],
   },
   MindBit: {
@@ -126,6 +147,7 @@ export const projectOverrides: Record<string, ProjectOverride> = {
     story: "React + TypeScript sandbox—swap in your pitch and outcomes when the build is ready.",
     highlights: ["TypeScript", "React"],
     category: "web",
+    language: { name: "TypeScript", color: "#3178c6" },
     screenshots: [
       "/screenshot/mindbit/header.jpg",
       "/screenshot/mindbit/1767886111081.jpg",
@@ -141,5 +163,24 @@ export const projectOverrides: Record<string, ProjectOverride> = {
       "Production-style CI with Jenkins declarative and multibranch pipelines, GitHub webhooks, and Python. pytest and flake8 on every push; branch protection and failure handling are the focus, with a minimal app on purpose.",
     highlights: ["Jenkins", "Python", "GitHub", "pytest", "flake8", "Docker"],
     category: "systems",
+    language: { name: "Python", color: "#3572A5" },
+  },
+  PostFolio: {
+    excerpt:
+      "Postgres + Portfolio, hence the name—CTEs, window functions, and COVAR_POP doing the heavy lifting.",
+    story:
+      "PostgreSQL-backed stock portfolio manager built as a SQL/database engineering showcase. The Express + vanilla-JS frontend stays intentionally thin so the schema design and analytical queries take the spotlight—chained CTEs, LAG window functions, COVAR_POP/VAR_POP/STDDEV_POP, DISTINCT ON, and conflict-aware UPSERTs computing per-stock Beta vs. a synthesized market and the portfolio-wide covariance matrix entirely in SQL.",
+    highlights: [
+      "PostgreSQL",
+      "SQL",
+      "Window Functions",
+      "CTEs",
+      "Express",
+      "Node.js",
+      "ESM",
+      "pg",
+    ],
+    category: "db",
+    language: { name: "SQL", color: "#e38c00" },
   },
 };

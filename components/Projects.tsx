@@ -66,6 +66,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
       systems: projects.filter((p) => p.category === "systems").length,
       mobile: projects.filter((p) => p.category === "mobile").length,
       web: projects.filter((p) => p.category === "web").length,
+      db: projects.filter((p) => p.category === "db").length,
     };
   }, [projects]);
 
@@ -79,6 +80,7 @@ export default function Projects({ projects }: { projects: Project[] }) {
     { key: "systems", label: "Systems" },
     { key: "mobile", label: "Mobile" },
     { key: "web", label: "Web" },
+    { key: "db", label: "DB" },
   ];
 
   return (

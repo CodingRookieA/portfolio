@@ -7,17 +7,47 @@ const groups = [
   {
     title: "Languages",
     subtitle: "Core languages I reach for",
-    skills: ["C", "Java", "Kotlin", "Python", "TypeScript", "x86 Assembly"],
+    skills: ["Python", "JavaScript", "TypeScript", "Java", "C", "Bash", "SQL", "HTML/CSS"],
   },
   {
-    title: "Frameworks",
+    title: "Frameworks & Libraries",
     subtitle: "Where ideas become products",
-    skills: ["React", "Next.js", "Spring Boot", "Android SDK"],
+    skills: ["React", "Node.js", "Express", "Socket.io", "WebRTC", "Jest", "JUnit"],
   },
   {
-    title: "Tools & infra",
-    subtitle: "Shipping, data, and systems",
-    skills: ["Linux", "Git", "Firebase", "PostgreSQL", "Docker", "Kafka"],
+    title: "Databases",
+    subtitle: "Persistence, retrieval, and vector search",
+    skills: ["MongoDB", "MongoDB Atlas (Vector Search)", "PostgreSQL", "NeDB", "Firebase"],
+  },
+  {
+    title: "DevOps & Tools",
+    subtitle: "Shipping, automation, and ops",
+    skills: [
+      "Docker",
+      "Nginx",
+      "Jenkins",
+      "Git/GitHub",
+      "Linux CLI",
+      "Azure DevOps",
+      "Jira",
+      "Microsoft Power Platform",
+      "n8n",
+    ],
+  },
+  {
+    title: "AI/ML",
+    subtitle: "Libraries, retrieval, and orchestration",
+    skills: [
+      "PyTorch",
+      "Hugging Face Transformers",
+      "scikit-learn",
+      "LLM APIs",
+      "RAG pipelines",
+      "Prompt engineering",
+      "Vector search & embeddings",
+      "Model fine-tuning",
+      "Agentic AI",
+    ],
   },
 ];
 
@@ -50,12 +80,12 @@ export default function Skills() {
           Capabilities <span className="text-gradient">by layer</span>
         </h2>
         <p className="section-lead">
-          Languages, frameworks, and tools — tiles stagger in with depth; a gentle float keeps the grid alive (unless
+          Capabilities across the stack — tiles stagger in with depth; a gentle float keeps the grid alive (unless
           reduced motion is on).
         </p>
 
         <motion.div
-          className="mt-14 grid gap-6 md:grid-cols-3"
+          className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           variants={reduced ? { hidden: {}, show: {} } : gridContainer}
           initial={reduced ? false : "hidden"}
           whileInView={reduced ? "show" : "show"}

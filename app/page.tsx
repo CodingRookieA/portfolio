@@ -5,21 +5,13 @@ import Nav from "@/components/Nav";
 import ScrollHint from "@/components/ScrollHint";
 import Projects, { type Project } from "@/components/Projects";
 import Skills from "@/components/Skills";
-import { getPinnedRepos } from "@/lib/github";
 import { loadProjectReadmeMarkdown } from "@/lib/project-readme";
 import {
+  GITHUB_USERNAME,
   flagshipProject,
   pinnedProjectDisplayOrder,
   projectOverrides,
-  type ProjectCategory,
 } from "@/lib/projects.config";
-
-function inferCategoryFromTopics(topics: string[]): ProjectCategory {
-  const lowered = topics.map((topic) => topic.toLowerCase());
-  if (lowered.some((topic) => topic.includes("android") || topic.includes("mobile"))) return "mobile";
-  if (lowered.some((topic) => topic.includes("web") || topic.includes("react") || topic.includes("next"))) return "web";
-  return "systems";
-}
 
 function excerptFromStory(story: string, maxLen = 108): string {
   const t = story.trim().replace(/\s+/g, " ");
@@ -55,43 +47,36 @@ function trimWithEllipsis(s: string, max: number): string {
   return (ls > max * 0.55 ? cut.slice(0, ls) : cut).trimEnd() + "…";
 }
 
-/** Stable sort: listed repos first in config order, then any extras keep API order. */
-function sortPinnedByDisplayOrder(projects: Project[]): Project[] {
-  const rank = new Map(pinnedProjectDisplayOrder.map((name, i) => [name, i]));
-  return [...projects].sort((a, b) => {
-    const ra = rank.get(a.name);
-    const rb = rank.get(b.name);
-    if (ra !== undefined && rb !== undefined) return ra - rb;
-    if (ra !== undefined) return -1;
-    if (rb !== undefined) return 1;
-    return 0;
-  });
+function repoUrlFor(name: string): string {
+  return `https://github.com/${GITHUB_USERNAME}/${name}`;
 }
 
 export default async function Page() {
-  const pinnedRepos = await getPinnedRepos();
-
-  const pinnedMerged: Project[] = pinnedRepos.map((repo) => {
-    const override = projectOverrides[repo.name];
-    const raw = override?.story ?? repo.description ?? "No project story available yet.";
-    const story = limitStorySentences(raw, 3);
-
-    return {
-      name: repo.name,
-      story,
-      excerpt: override?.excerpt ?? excerptFromStory(story),
-      highlights: override?.highlights ?? repo.topics,
-      category: override?.category ?? inferCategoryFromTopics(repo.topics),
-      language: repo.primaryLanguage,
-      url: repo.url,
-      screenshots: override?.screenshots ?? [],
-      videos: override?.videos ?? [],
-      extraLinks: override?.extraLinks ?? [],
-      linkLabel: undefined,
-      sourceNote: undefined,
-      readmeMarkdown: loadProjectReadmeMarkdown(repo.name),
-    };
-  });
+  // Build pinned projects entirely from the local config — no GitHub fetch,
+  // no env-var dependency, deterministic on every host.
+  const pinnedMerged: Project[] = pinnedProjectDisplayOrder
+    .filter((name) => name !== flagshipProject.name) // dedupe if flagship is also pinned
+    .map((name): Project | null => {
+      const override = projectOverrides[name];
+      if (!override) return null;
+      const story = limitStorySentences(override.story, 3);
+      return {
+        name,
+        story,
+        excerpt: override.excerpt ?? excerptFromStory(story),
+        highlights: override.highlights,
+        category: override.category,
+        language: override.language ?? null,
+        url: repoUrlFor(name),
+        screenshots: override.screenshots ?? [],
+        videos: override.videos ?? [],
+        extraLinks: override.extraLinks ?? [],
+        linkLabel: undefined,
+        sourceNote: undefined,
+        readmeMarkdown: loadProjectReadmeMarkdown(name),
+      };
+    })
+    .filter((p): p is Project => p !== null);
 
   const flagship: Project = {
     name: flagshipProject.name,
@@ -109,11 +94,7 @@ export default async function Page() {
     readmeMarkdown: loadProjectReadmeMarkdown(flagshipProject.name),
   };
 
-  // Avoid duplicate React keys / layoutIds if the flagship repo is also a GitHub pin.
-  const pinnedWithoutFlagship = sortPinnedByDisplayOrder(
-    pinnedMerged.filter((p) => p.name !== flagshipProject.name),
-  );
-  const mergedProjects: Project[] = [flagship, ...pinnedWithoutFlagship];
+  const mergedProjects: Project[] = [flagship, ...pinnedMerged];
 
   return (
     <>

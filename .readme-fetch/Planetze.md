@@ -39,7 +39,7 @@ Planetze is an **eco-tracking Android application** developed as part of the CSC
 ## 📂 How to Run  
 1. Clone the repo:  
    ```bash
-   git clone https://github.com/<your-username>/CSCB07-Software-Design-Project.git
+   git clone https://github.com/CodingRookieA/Planetze
 
    Open in Android Studio
 

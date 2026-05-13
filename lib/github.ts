@@ -1,5 +1,9 @@
 // SERVER ONLY — never import this in a Client Component.
-// Never import this file in a Client Component.
+//
+// CURRENTLY UNUSED. The portfolio is rendered entirely from the local config
+// in `lib/projects.config.ts` so it works on any host without GITHUB_TOKEN.
+// This file is kept (un-imported) in case we want to enrich cards later with
+// live data such as star counts or the README's update timestamp.
 
 export interface GithubRepo {
   name: string;
@@ -73,7 +77,9 @@ export async function getPinnedRepos(): Promise<GithubRepo[]> {
         Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
       },
       body: JSON.stringify({ query: QUERY }),
-      next: { revalidate: 3600 },
+      // Long cache in prod so we're nice to the GitHub API; short in dev so newly
+      // pinned repos appear without manually nuking `.next/cache/fetch-cache`.
+      next: { revalidate: process.env.NODE_ENV === "production" ? 3600 : 30 },
     });
 
     if (!response.ok) {
