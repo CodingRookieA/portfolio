@@ -9,7 +9,7 @@ const HeroScene = dynamic(() => import("@/components/HeroScene"), { ssr: false }
 const SUBTITLE_LINES = [
   "Computer Science @ UTSC · TD Bank Intern",
   "Backend · AI/ML · Systems when it counts",
-  "Recruiting for Fall 2026/Summer 2027",
+  "Recruiting for Fall 2026/Summer 2027 lmaolmaolmao",
 ];
 
 export default function Hero() {
