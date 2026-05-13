@@ -54,7 +54,7 @@ const items: ExperienceItem[] = [
     dates: "May 2026 – Present",
     logoSrc: "/logos/Toronto-Dominion_Bank_logo.svg",
     current: true,
-    bullets: ["Fresh start — nothing too much to say yet."],
+    bullets: [],
     tags: [],
   },
   {
