@@ -24,7 +24,7 @@ function ExperienceLogo({
 }) {
   return (
     <div
-      className={`relative flex h-20 w-20 shrink-0 overflow-hidden rounded-2xl border md:h-28 md:w-28 ${
+      className={`relative flex h-16 w-16 shrink-0 overflow-hidden rounded-2xl border sm:h-20 sm:w-20 md:h-28 md:w-28 ${
         logoSrc ? "border-white/15 bg-white/[0.07]" : "border-dashed border-white/20 bg-white/[0.03]"
       }`}
     >
@@ -34,7 +34,7 @@ function ExperienceLogo({
           <img
             src={logoSrc}
             alt={`${company} logo`}
-            className="h-full w-full object-contain p-3 md:p-3.5"
+            className="h-full w-full object-contain p-2.5 sm:p-3 md:p-3.5"
             loading="lazy"
           />
         </>
@@ -132,16 +132,16 @@ export default function Experience() {
                     viewport={{ once: true, amount: 0.22 }}
                     transition={{ duration: 0.8, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
                     style={{ transformStyle: "preserve-3d" }}
-                    className={`glass-panel rounded-2xl p-7 md:p-10 ${item.placeholder ? "border-dashed opacity-45" : ""}`}
+                    className={`glass-panel rounded-2xl p-5 sm:p-7 md:p-10 ${item.placeholder ? "border-dashed opacity-45" : ""}`}
                   >
-                    <div className="flex gap-5 md:gap-7">
+                    <div className="flex gap-4 sm:gap-5 md:gap-7">
                       <ExperienceLogo company={item.company} logoSrc={item.logoSrc} />
                       <div className="min-w-0 flex-1 space-y-1.5">
-                        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-x-4 md:gap-x-6">
-                          <h3 className="font-display min-w-0 break-words text-3xl font-bold leading-snug text-white [overflow-wrap:anywhere] md:text-4xl">
+                        <div className="flex flex-col gap-y-1 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-x-6">
+                          <h3 className="font-display min-w-0 break-words text-2xl font-bold leading-snug text-white [overflow-wrap:anywhere] sm:text-3xl md:text-4xl">
                             {item.company}
                           </h3>
-                          <p className="flex shrink-0 items-center justify-self-end gap-2.5 whitespace-nowrap pt-1 text-base text-[var(--text-muted)] md:pt-1.5 md:text-lg">
+                          <p className="flex items-center gap-2 whitespace-nowrap text-sm text-[var(--text-muted)] sm:gap-2.5 sm:text-base md:justify-self-end md:pt-1.5 md:text-lg">
                             {!item.placeholder && item.current && (
                               <span className="relative flex h-2.5 w-2.5">
                                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/70" />
@@ -151,12 +151,12 @@ export default function Experience() {
                             {item.dates}
                           </p>
                         </div>
-                        <p className="text-base font-medium text-accent-cyan/90 md:text-lg">{item.role}</p>
+                        <p className="text-sm font-medium text-accent-cyan/90 sm:text-base md:text-lg">{item.role}</p>
                       </div>
                     </div>
 
                     {!item.placeholder && item.bullets.length > 0 && (
-                      <ul className="mt-7 space-y-3.5 text-base leading-relaxed text-[var(--text-muted)] md:mt-8 md:space-y-4 md:text-lg">
+                      <ul className="mt-6 space-y-3 text-[0.9375rem] leading-relaxed text-[var(--text-muted)] sm:mt-7 sm:space-y-3.5 sm:text-base md:mt-8 md:space-y-4 md:text-lg">
                         {item.bullets.map((b) => (
                           <li key={b} className="flex gap-3.5">
                             <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-blue md:mt-3" />
