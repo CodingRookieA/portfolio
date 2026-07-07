@@ -12,7 +12,7 @@ const groups = [
   {
     title: "Frameworks & Libraries",
     subtitle: "Where ideas become products",
-    skills: ["React", "Node.js", "Express", "Socket.io", "WebRTC", "Jest", "JUnit"],
+    skills: ["React", "Node.js", "Express", "Flask", "Socket.io", "WebRTC", "pandas", "Selenium", "Cucumber", "Jest", "JUnit"],
   },
   {
     title: "Databases",

@@ -94,9 +94,6 @@ export const flagshipProject: FlagshipProjectConfig = {
   ],
   category: "web",
   language: { name: "JavaScript", color: "#f1e05a" },
-  url: "https://finwise-frontend-7qbw.onrender.com/",
-  linkLabel: "Live demo ↗",
-  sourceNote: "Source is private (privacy / academic constraints); readme highlights & demo linked above.",
   /** First image is the featured-card preview; the rest appear in the expanded detail gallery. */
   screenshots: [
     "/screenshot/finwise/header.png",

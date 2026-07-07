@@ -50,12 +50,18 @@ function ExperienceLogo({
 const items: ExperienceItem[] = [
   {
     company: "TD Bank Group",
-    role: "Business Systems Analyst (Intern)",
+    role: "Business Systems Analyst (Co-op)",
     dates: "May 2026 – Present",
     logoSrc: "/logos/Toronto-Dominion_Bank_logo.svg",
     current: true,
-    bullets: [],
-    tags: [],
+    bullets: [
+      "Designing a Python/Flask ingestion pipeline that replaces email/Jira ticket intake and Excel tracking with a unified portal: CSV schema validation, a rules engine cross-checking records against a local extract, dual routing (automated feeds vs. API injection), and pre/post snapshot comparison to verify only intended records changed.",
+      "Maintained and extended end-to-end test coverage for an enterprise eGRC platform on Archer—patching Selenium and Cucumber scenarios in Java (Gherkin across `.feature`, `Steps.java`, `Page.java`) and updating XPath locators after each SIT release.",
+      "Improved test reliability by fixing non-idempotent control-procedure runs (auto-reverting record state at teardown) and adding checkbox pre-checks so targets aren’t re-selected when already set—reducing false failures without breaking shared step code.",
+      "Built a Python ETL script with pandas and openpyxl to automate cross-Excel field-description lookups, with row classification and style preservation—eliminating a fully manual reconciliation workflow.",
+      "Own ~50% of business upload requests—validating Excel submissions for compliance controls and legal regulatory records before injection into a sensitive, access-restricted eGRC system.",
+    ],
+    tags: ["Python", "Flask", "Java", "Selenium", "Cucumber", "pandas", "eGRC"],
   },
   {
     company: "Uphouse Inc.",
