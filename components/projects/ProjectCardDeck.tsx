@@ -49,21 +49,23 @@ export function ProjectCardDeck({ project, variant }: { project: Project; varian
         }
       >
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm font-semibold text-accent-blue transition hover:text-accent-cyan"
-          >
-            {project.linkLabel ?? "GitHub ↗"}
-          </a>
+          {project.url ? (
+            <a
+              href={project.url}
+              target="_blank"
+              rel="noreferrer"
+              className="text-lg font-semibold text-accent-blue transition hover:text-accent-cyan md:text-xl"
+            >
+              {project.linkLabel ?? "GitHub ↗"}
+            </a>
+          ) : null}
           {(project.extraLinks ?? []).map((l) => (
             <a
               key={l.href}
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="text-sm font-semibold text-white/70 transition hover:text-white"
+              className="text-lg font-semibold text-white/70 transition hover:text-white md:text-xl"
             >
               {l.label} ↗
             </a>

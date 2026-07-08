@@ -7,7 +7,7 @@ export interface Project {
   highlights: string[];
   category: ProjectCategory;
   language: { name: string; color: string } | null;
-  url: string;
+  url?: string;
   screenshots?: string[];
   videos?: ProjectVideo[];
   extraLinks?: ProjectExtraLink[];

@@ -37,8 +37,8 @@ export interface FlagshipProjectConfig {
   highlights: string[];
   category: ProjectCategory;
   language: { name: string; color: string } | null;
-  /** Primary outbound link (e.g. live demo). */
-  url: string;
+  /** Primary outbound link (e.g. live demo or GitHub). Omit when none is public. */
+  url?: string;
   /** Anchor label; defaults to “GitHub ↗” in UI when omitted. */
   linkLabel?: string;
   /** Optional note when repo/source isn’t public. */

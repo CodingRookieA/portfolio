@@ -54,49 +54,49 @@ function computeTargetRect(): OriginRect {
 
 const markdownComponents = {
   h1: ({ children }: { children?: React.ReactNode }) => (
-    <h1 className="font-display mt-10 border-b border-white/10 pb-3 text-2xl font-bold tracking-tight text-white first:mt-0 md:text-3xl">
+    <h1 className="font-display mt-10 border-b border-white/10 pb-3 text-4xl font-bold tracking-tight text-white first:mt-0 md:text-5xl">
       {children}
     </h1>
   ),
   h2: ({ children }: { children?: React.ReactNode }) => (
-    <h2 className="font-display mt-8 text-xl font-semibold tracking-tight text-white md:text-2xl">{children}</h2>
+    <h2 className="font-display mt-8 text-3xl font-semibold tracking-tight text-white md:text-4xl">{children}</h2>
   ),
   h3: ({ children }: { children?: React.ReactNode }) => (
-    <h3 className="mt-6 text-lg font-semibold text-white">{children}</h3>
+    <h3 className="mt-6 text-2xl font-semibold text-white md:text-3xl">{children}</h3>
   ),
   h4: ({ children }: { children?: React.ReactNode }) => (
-    <h4 className="mt-4 text-base font-semibold text-white">{children}</h4>
+    <h4 className="mt-4 text-xl font-semibold text-white md:text-2xl">{children}</h4>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="text-[15px] leading-relaxed text-[var(--text-muted)] md:text-base">{children}</p>
+    <p className="text-lg leading-relaxed text-[var(--text-muted)] md:text-xl">{children}</p>
   ),
   a: ({ href, children }: { href?: string; children?: React.ReactNode }) => (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="font-medium text-accent-blue underline decoration-white/20 underline-offset-2 transition hover:text-accent-cyan hover:decoration-accent-cyan/40"
+      className="text-lg font-medium text-accent-blue underline decoration-white/20 underline-offset-2 transition hover:text-accent-cyan hover:decoration-accent-cyan/40 md:text-xl"
     >
       {children}
     </a>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="list-disc space-y-2 pl-5 text-[15px] text-[var(--text-muted)] md:text-base">{children}</ul>
+    <ul className="list-disc space-y-3 pl-5 text-lg text-[var(--text-muted)] md:text-xl">{children}</ul>
   ),
   ol: ({ children }: { children?: React.ReactNode }) => (
-    <ol className="list-decimal space-y-2 pl-5 text-[15px] text-[var(--text-muted)] md:text-base">{children}</ol>
+    <ol className="list-decimal space-y-3 pl-5 text-lg text-[var(--text-muted)] md:text-xl">{children}</ol>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
     <li className="leading-relaxed [overflow-wrap:anywhere]">{children}</li>
   ),
   blockquote: ({ children }: { children?: React.ReactNode }) => (
-    <blockquote className="border-l-2 border-accent-cyan/50 bg-white/[0.03] py-2 pl-4 text-[var(--text-muted)]">
+    <blockquote className="border-l-2 border-accent-cyan/50 bg-white/[0.03] py-2 pl-4 text-lg text-[var(--text-muted)] md:text-xl">
       {children}
     </blockquote>
   ),
   hr: () => <hr className="my-8 border-white/10" />,
   pre: ({ children }: { children?: React.ReactNode }) => (
-    <pre className="overflow-x-auto rounded-xl border border-white/10 bg-black/45 p-4 text-[13px] leading-relaxed text-[var(--text-primary)]">
+    <pre className="overflow-x-auto rounded-xl border border-white/10 bg-black/45 p-4 text-base leading-relaxed text-[var(--text-primary)] md:text-lg">
       {children}
     </pre>
   ),
@@ -104,14 +104,14 @@ const markdownComponents = {
     const isBlock = Boolean(className?.includes("language-"));
     if (isBlock) {
       return (
-        <code className={`${className ?? ""} font-mono text-[13px]`} {...props}>
+        <code className={`${className ?? ""} font-mono text-base md:text-lg`} {...props}>
           {children}
         </code>
       );
     }
     return (
       <code
-        className="rounded-md border border-white/10 bg-white/10 px-1.5 py-0.5 font-mono text-[0.9em] text-accent-cyan/95"
+        className="rounded-md border border-white/10 bg-white/10 px-1.5 py-0.5 font-mono text-[1em] text-accent-cyan/95 md:text-[1.05em]"
         {...props}
       >
         {children}
@@ -120,7 +120,7 @@ const markdownComponents = {
   },
   table: ({ children }: { children?: React.ReactNode }) => (
     <div className="my-4 overflow-x-auto rounded-xl border border-white/10">
-      <table className="w-full min-w-[520px] border-collapse text-left text-sm text-[var(--text-muted)]">
+      <table className="w-full min-w-[520px] border-collapse text-left text-lg text-[var(--text-muted)] md:text-xl">
         {children}
       </table>
     </div>
@@ -129,7 +129,7 @@ const markdownComponents = {
     <thead className="bg-white/5 text-white">{children}</thead>
   ),
   th: ({ children }: { children?: React.ReactNode }) => (
-    <th className="border-b border-white/10 px-3 py-2 text-xs font-semibold uppercase tracking-wider">{children}</th>
+    <th className="border-b border-white/10 px-3 py-2 text-base font-semibold uppercase tracking-wider md:text-lg">{children}</th>
   ),
   td: ({ children }: { children?: React.ReactNode }) => (
     <td className="border-b border-white/5 px-3 py-2 align-top [overflow-wrap:anywhere]">{children}</td>
@@ -302,27 +302,31 @@ export function ProjectDetailPanel({ project, origin, onClosed }: Props) {
               </div>
 
               <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 md:px-6 md:py-8">
-                <div className="flex flex-wrap gap-x-4 gap-y-2 border-b border-white/5 pb-6">
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm font-semibold text-accent-blue transition hover:text-accent-cyan"
-                  >
-                    {project.linkLabel ?? "GitHub ↗"}
-                  </a>
-                  {(project.extraLinks ?? []).map((l) => (
-                    <a
-                      key={l.href}
-                      href={l.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-sm font-semibold text-white/75 transition hover:text-white"
-                    >
-                      {l.label} ↗
-                    </a>
-                  ))}
-                </div>
+                {(project.url || (project.extraLinks ?? []).length > 0) && (
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 border-b border-white/5 pb-6">
+                    {project.url ? (
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-lg font-semibold text-accent-blue transition hover:text-accent-cyan md:text-xl"
+                      >
+                        {project.linkLabel ?? "GitHub ↗"}
+                      </a>
+                    ) : null}
+                    {(project.extraLinks ?? []).map((l) => (
+                      <a
+                        key={l.href}
+                        href={l.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-lg font-semibold text-white/75 transition hover:text-white md:text-xl"
+                      >
+                        {l.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                )}
 
                 {project.sourceNote ? (
                   <p className="mt-4 text-xs leading-relaxed text-[var(--text-faint)]">{project.sourceNote}</p>
@@ -344,7 +348,7 @@ export function ProjectDetailPanel({ project, origin, onClosed }: Props) {
                 })()}
 
                 {Boolean(project.readmeMarkdown?.trim()) ? (
-                  <div className="prose-project mt-10 space-y-4 border-t border-white/10 pt-10">
+                  <div className="prose-project mt-10 space-y-6 border-t border-white/10 pt-10">
                     <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                       {project.readmeMarkdown!}
                     </ReactMarkdown>
@@ -352,7 +356,7 @@ export function ProjectDetailPanel({ project, origin, onClosed }: Props) {
                 ) : (
                   <div className="mt-10 rounded-xl border border-white/10 bg-white/[0.03] p-4 md:p-5">
                     <p className="text-xs font-semibold uppercase tracking-wider text-accent-cyan/90">Summary</p>
-                    <p className="mt-2 text-[15px] leading-relaxed text-[var(--text-muted)] md:text-base">
+                    <p className="mt-2 text-lg leading-relaxed text-[var(--text-muted)] md:text-xl">
                       {project.story}
                     </p>
                   </div>

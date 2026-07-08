@@ -13,8 +13,6 @@
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com)
 [![CI](https://img.shields.io/badge/GitHub%20Actions-CI%2FCD-2088FF?logo=githubactions&logoColor=white)](https://github.com/features/actions)
 
-> 🔗 **Github:** https://github.com/CodingRookieA/FinWise
-
 ---
 
 ## 📖 Overview
@@ -154,11 +152,6 @@ The decision tree in `BankCsvParser.determineAssetClass(...)` layers five signal
 This single class is unit-tested with fixtures from each bank, and adding a sixth brokerage is an isolated change: subclass `BankCsvParser`, declare `requiredHeaders`, implement `parse`, add to `CsvParserRouter`. No churn anywhere else in the system.
 
 ---
-
-## Demo
-
-> 🔗 **Live demo:** https://finwise-frontend-7qbw.onrender.com/
-
 ## 🗒️ Notes
 
 This project was originally developed as a team capstone for one of my SWE course and is presented here as part of my engineering portfolio.

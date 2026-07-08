@@ -85,12 +85,12 @@ export default async function Page() {
     highlights: flagshipProject.highlights,
     category: flagshipProject.category,
     language: flagshipProject.language,
-    url: flagshipProject.url,
+    url: flagshipProject.url ?? repoUrlFor(flagshipProject.name),
     screenshots: flagshipProject.screenshots ?? [],
     videos: flagshipProject.videos ?? [],
     extraLinks: flagshipProject.extraLinks ?? [],
-    linkLabel: flagshipProject.linkLabel,
-    sourceNote: flagshipProject.sourceNote,
+    linkLabel: undefined,
+    sourceNote: undefined,
     readmeMarkdown: loadProjectReadmeMarkdown(flagshipProject.name),
   };
 
