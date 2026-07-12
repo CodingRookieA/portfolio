@@ -8,6 +8,28 @@ import * as THREE from "three";
 
 const COUNT = 2000;
 
+/** Soft circular sprite so PointsMaterial renders dots instead of squares. */
+function createCircleTexture() {
+  const size = 64;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+  g.addColorStop(0, "rgba(255,255,255,1)");
+  g.addColorStop(0.45, "rgba(255,255,255,0.85)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, size, size);
+
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.needsUpdate = true;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
 /** Deterministic per-particle factor in [min, max] */
 function particleSpread(i: number, min = 0.48, max = 1): number {
   const t = Math.sin(i * 12.9898 + 78.233) * 43758.5453;
@@ -29,6 +51,7 @@ function ParticleField({ mouseRef, reducedMotion }: { mouseRef: HeroMouseRef; re
   const raycaster = useMemo(() => new THREE.Raycaster(), []);
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), []);
   const attractorTmp = useMemo(() => new THREE.Vector3(), []);
+  const localAttractor = useMemo(() => new THREE.Vector3(), []);
   const smoothedPull = useRef(0);
 
   const rest = useMemo(() => {
@@ -45,6 +68,13 @@ function ParticleField({ mouseRef, reducedMotion }: { mouseRef: HeroMouseRef; re
   }, []);
 
   const positions = useMemo(() => new Float32Array(rest), [rest]);
+  const circleMap = useMemo(() => createCircleTexture(), []);
+
+  useEffect(() => {
+    return () => {
+      circleMap?.dispose();
+    };
+  }, [circleMap]);
 
   useFrame((state, dt) => {
     const pts = pointsRef.current;
@@ -73,9 +103,15 @@ function ParticleField({ mouseRef, reducedMotion }: { mouseRef: HeroMouseRef; re
       if (len > 36) attractorTmp.multiplyScalar(36 / len);
     }
 
-    const ax = attractorTmp.x;
-    const ay = attractorTmp.y;
-    const az = attractorTmp.z;
+    // Attractor is in world space; particle positions are local to the rotating Points mesh.
+    // Convert so pull follows the cursor even after the cloud has spun (avoids left/right reverse).
+    pts.updateMatrixWorld();
+    localAttractor.copy(attractorTmp);
+    pts.worldToLocal(localAttractor);
+
+    const ax = localAttractor.x;
+    const ay = localAttractor.y;
+    const az = localAttractor.z;
 
     const targetPull = m.pressed && m.inBounds ? 1 : m.inBounds ? 0.38 : 0;
     const pullAlpha = Math.min(1, dt * 10);
@@ -105,13 +141,15 @@ function ParticleField({ mouseRef, reducedMotion }: { mouseRef: HeroMouseRef; re
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.062}
-        color="#85b4ff"
+        size={0.115}
+        color="#a8c9ff"
+        map={circleMap ?? undefined}
         transparent
-        opacity={0.72}
+        opacity={0.92}
         depthWrite={false}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
+        alphaTest={0.01}
       />
     </points>
   );
@@ -188,7 +226,7 @@ export default function HeroScene() {
   return (
     <div
       ref={containerRef}
-      className="pointer-events-none absolute inset-0 z-0 h-full min-h-[100vh] w-full"
+      className="pointer-events-none absolute inset-0 z-0 h-full min-h-full w-full"
       aria-hidden="true"
     >
       <Canvas

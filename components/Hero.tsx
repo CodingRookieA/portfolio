@@ -21,9 +21,9 @@ export default function Hero() {
   });
   const yGlow = useTransform(scrollYProgress, [0, 1], [0, 100]);
   const yGlow2 = useTransform(scrollYProgress, [0, 1], [0, 55]);
-  /* Fade / move later and gentler so the handoff to Experience feels less abrupt. */
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.58], [1, 0]);
-  const contentY = useTransform(scrollYProgress, [0, 0.72], [0, 20]);
+  /* Keep hero copy readable; the bottom gradient handles the visual handoff. */
+  const contentOpacity = useTransform(scrollYProgress, [0.55, 1], [1, 0.55]);
+  const contentY = useTransform(scrollYProgress, [0.5, 1], [0, 16]);
 
   const [lineIndex, setLineIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -55,7 +55,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       id="bio"
-      className="relative flex min-h-[100dvh] flex-col justify-center overflow-x-hidden scroll-mt-28 px-4 pb-24 pt-24 [@media(max-height:780px)]:justify-start [@media(max-height:780px)]:pb-14 [@media(max-height:780px)]:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] md:px-8 md:pb-32 md:pt-28 lg:pb-36 lg:pt-32"
+      className="relative flex min-h-[100dvh] flex-col justify-center overflow-x-hidden scroll-mt-28 px-4 pb-[min(48vh,28rem)] pt-24 [@media(max-height:780px)]:justify-start [@media(max-height:780px)]:pb-[min(36vh,18rem)] [@media(max-height:780px)]:pt-[calc(5.25rem+env(safe-area-inset-top,0px))] md:px-8 md:pb-[min(52vh,32rem)] md:pt-28 lg:pb-[min(56vh,36rem)] lg:pt-32"
     >
       {/* Clip particles / glow orbs only — keeps tall hero content (CTAs) from being chopped at the fold. */}
       <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
@@ -73,11 +73,23 @@ export default function Hero() {
             />
           </>
         )}
+        {/* Long soft dissolve — particles stay readable through most of the bridge, then ease out. */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[min(58vh,480px)]"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent 0%, transparent 28%, color-mix(in srgb, var(--bg-deep) 18%, transparent) 55%, color-mix(in srgb, var(--bg-deep) 48%, transparent) 78%, color-mix(in srgb, var(--bg-deep) 72%, transparent) 100%)",
+          }}
+        />
       </div>
 
-      {/* Ramp from hero atmosphere into the flat page background — removes the hard horizontal seam. */}
+      {/* Outer ramp into Experience — still translucent enough that particles read in the bridge. */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-28 bg-gradient-to-b from-transparent via-[#0a0a1a]/50 to-[#0a0a1a] md:h-36 md:via-[#0a0a1a]/60 lg:h-44 lg:via-[#0a0a1a]/70"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[3] h-[min(36vh,280px)] md:h-[min(40vh,320px)]"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--bg-deep) 25%, transparent) 50%, color-mix(in srgb, var(--bg-deep) 70%, transparent) 82%, var(--bg-deep) 100%)",
+        }}
         aria-hidden
       />
 
@@ -85,16 +97,6 @@ export default function Hero() {
         style={reduced ? undefined : { opacity: contentOpacity, y: contentY }}
         className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center text-center md:items-start md:text-left"
       >
-        <motion.p
-          initial={reduced ? false : { opacity: 0, y: 16 }}
-          animate={reduced ? {} : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium uppercase tracking-[0.2em] text-[var(--text-muted)] backdrop-blur-md md:mb-6"
-        >
-          <span className="h-1.5 w-1.5 rounded-full bg-accent-cyan shadow-[0_0_12px_rgba(0,212,255,0.9)]" />
-          Portfolio 2026
-        </motion.p>
-
         <motion.h1
           initial={reduced ? false : { opacity: 0, y: 28, rotateX: 12 }}
           animate={reduced ? {} : { opacity: 1, y: 0, rotateX: 0 }}
@@ -110,7 +112,7 @@ export default function Hero() {
           initial={reduced ? false : { opacity: 0 }}
           animate={reduced ? {} : { opacity: 1 }}
           transition={{ delay: 0.35, duration: 0.5 }}
-          className="mt-5 min-h-[3.25rem] max-w-xl font-medium text-accent-cyan/95 text-lg leading-snug sm:min-h-[3.5rem] sm:text-xl [@media(max-height:780px)]:mt-3 md:mt-7 md:min-h-[4.25rem] md:text-2xl"
+          className="mt-5 min-h-[3.25rem] max-w-3xl font-medium text-accent-cyan/95 text-lg leading-snug sm:min-h-[3.5rem] sm:text-xl [@media(max-height:780px)]:mt-3 md:mt-7 md:min-h-[4.25rem] md:text-2xl"
         >
           {visibleSubtitle}
           {!reduced && charIndex < currentLine.length && (
@@ -132,7 +134,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="max-w-xl space-y-4 text-left text-lg leading-relaxed text-[var(--text-muted)] md:space-y-5 md:pt-2 md:text-xl">
+          <div className="max-w-3xl space-y-4 text-left text-lg leading-relaxed text-[var(--text-muted)] md:space-y-5 md:pt-2 md:text-xl">
             <p>
               I&apos;d rather build the future than write thinkpieces about it. Backend services and AI features that
               hold up in production — RAG pipelines, multi-signal classifiers, the architecture underneath them.

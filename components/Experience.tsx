@@ -96,6 +96,7 @@ export default function Experience() {
   return (
     <SectionShell
       id="experience"
+      entrance="soft"
       className="relative mx-auto min-h-screen w-full max-w-6xl px-4 py-24 md:px-6 md:py-32"
     >
       <div className="relative z-10">
