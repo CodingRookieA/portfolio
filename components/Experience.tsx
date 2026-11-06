@@ -59,7 +59,7 @@ const items: ExperienceItem[] = [
       "Built a Python automation pipeline (pandas, openpyxl) for eGRC ingestion request processing, including format/integrity checks and file merging. Reduced personal manual processing time by approximately 90%.",
       "Expanded test coverage for a pre-arbitration AI tool to full end-to-end integration testing across the input-to-decision pipeline. Confirmed the pipeline could reliably handle varied real-world data models ahead of broader adoption.",
       "Diagnosed a non-idempotent test defect and added Java functions across the test framework layers to auto-revert record state after each run. Replaced a manual reset process with an automated one.",
-      "Conducted an end-to-end access analysis on an eGRC platform to identify faulty user-access combinations. Authored corresponding Jira user stories and validated the fix directly on the platform.",
+      "Built phase one of a file-validation pipeline for the annual risk-assessment cycle, extending the team's ingestion automation so dropped files are auto-validated against each application's current stage and template before second-layer review. Replaced manual record-by-record checks across ~50 daily files of 100+ rows.",
     ],
     tags: ["Python", "Flask", "Java", "Selenium", "Cucumber", "pandas", "eGRC"],
   },
