@@ -48,7 +48,7 @@ export function ProjectCardDeck({ project, variant }: { project: Project; varian
           isFeatured ? "flex flex-wrap items-center gap-x-4 gap-y-2 pt-2" : "mt-auto flex flex-col gap-2 pt-2"
         }
       >
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="flex flex-col items-start gap-2">
           {project.url ? (
             <a
               href={project.url}
@@ -65,7 +65,7 @@ export function ProjectCardDeck({ project, variant }: { project: Project; varian
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="text-lg font-semibold text-white/70 transition hover:text-white md:text-xl"
+              className="text-lg font-semibold text-accent-blue transition hover:text-accent-cyan md:text-xl"
             >
               {l.label} ↗
             </a>

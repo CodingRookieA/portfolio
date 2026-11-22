@@ -303,7 +303,7 @@ export function ProjectDetailPanel({ project, origin, onClosed }: Props) {
 
               <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-6 md:px-6 md:py-8">
                 {(project.url || (project.extraLinks ?? []).length > 0) && (
-                  <div className="flex flex-wrap gap-x-4 gap-y-2 border-b border-white/5 pb-6">
+                  <div className="flex flex-col items-start gap-2 border-b border-white/5 pb-6">
                     {project.url ? (
                       <a
                         href={project.url}
@@ -320,7 +320,7 @@ export function ProjectDetailPanel({ project, origin, onClosed }: Props) {
                         href={l.href}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-lg font-semibold text-white/75 transition hover:text-white md:text-xl"
+                        className="text-lg font-semibold text-accent-blue transition hover:text-accent-cyan md:text-xl"
                       >
                         {l.label} ↗
                       </a>

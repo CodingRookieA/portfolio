@@ -103,8 +103,8 @@ export const flagshipProject: FlagshipProjectConfig = {
     "/screenshot/finwise/4.png",
     "/screenshot/finwise/5.png",
   ],
-  videos: [],
-  extraLinks: [],
+  videos: [{ url: "https://youtu.be/FFFBrp-j_7A", title: "Recorded demo ↗" }],
+  extraLinks: [{ label: "Recorded demo", href: "https://youtu.be/FFFBrp-j_7A" }],
 };
 
 export const projectOverrides: Record<string, ProjectOverride> = {
